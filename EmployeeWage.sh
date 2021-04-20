@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 echo "Welcome to Employee Wage Computation Program"
 
 IS_PART_TIME=1;
@@ -23,15 +23,21 @@ function WorkingHrs()
         esac
         echo $workingHours;
 }
-
+function wagearray()
+{
+	local workHrs=$1
+	wage=$(($workHrs*$salaryperHr))
+	echo $wage
+}
 while [[ $totalWorkHrs -lt $numWorkHrs &&
          $totalWorkDays -lt  $numWorkDays ]]
 do
         ((totalWorkDays++))
         workingHours="$( WorkingHrs $((RANDOM%3)) )"
-        totalWorkHrs=$(($totalWorkHrs + $workingHours))
+        totalWorkHrs=$(($totalWorkHrs+$workingHours))
+	empDailywage=[$totalWorkDays]="$( wagearray $workingHours)"
 done
 
 totalSalary=$(($totalWorkHrs*$salaryperHr));
-echo $totalSalary
+echo ${empDailywage[@]}
 
